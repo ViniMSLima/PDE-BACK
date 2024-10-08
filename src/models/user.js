@@ -6,36 +6,21 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: 1,
   },
-  carplate: {
-    type: String,
-    required: true,
-    minlength: 7,
-  },
   residence: {
     type: String,
     required: true,
     minlength: 1
-  },
-  carbrand: {
-    type: String,
-    required: true,
-    minlength: 1
-  },
-  carmodel: {
-    type: String,
-    required: true,
-    minlength: 1
-  },
-  caryear: {
-    type: String,
-    required: true,
-    minlength: 4
   },
   cpf: {
     type: String,
     required: true,
     minlength: 11,
   },
+  cars: [{
+    type: String,
+    required: true,
+    minlength: 11,
+  }],
   createdAt: {
     type: Date,
     required: true,

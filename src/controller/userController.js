@@ -1,6 +1,7 @@
-const { User } = require("../models/user");
+    const { User } = require("../models/user");
 const jwt = require("jsonwebtoken");
 var CryptoJS = require("crypto-js");
+const { Car } = require("../models/car");
 require("dotenv").config();
 
 class UserController {
@@ -13,15 +14,26 @@ class UserController {
         }
     }
 
-    static async postUser(req, res) {
-        const { name, carplate, residence, cpf, carbrand, carmodel, caryear} = req.body;
+    static async getUserByCarPlate(req, res) {
+        const { carplate } = req.query;
 
-        if (!name || !carplate || !residence || !cpf || !carbrand || !carmodel || !caryear)
+        try {
+            const users = await User.findOne({ carplate: carplate });;
+            return res.status(200).send({ users });
+        } catch (error) {
+            return res.status(404).send({ error: 'Users not found!' });
+        }
+    }
+
+    static async postUser(req, res) {
+        const { name, carId, residence, cpf} = req.body;
+
+        if (!name || !carId || !residence || !cpf)
             return res.status(400).send({ message: 'Field\'s can\'t be empty.' });
 
-        var verify = await User.findOne({ cpf: cpf });
+        var verify = await Car.findOne({ plate: plate });
         if (verify) {
-            return res.status(401).send({ error: 'An user with this CPF already exists!' });
+            return res.status(401).send({ error: 'A car with this plate already exists!' });
         }
 
         const user = new User({

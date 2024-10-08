@@ -5,6 +5,7 @@ const router = express.Router();
 router
   .get("/getusers", userController.getUsers)
   .get("/deleteusers", userController.clearUsers)
+  .get("/getuserbycarplate", userController.getUserByCarPlate)
 
   .post("/postuser", userController.postUser)
 
