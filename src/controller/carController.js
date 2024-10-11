@@ -2,7 +2,7 @@ const { Car } = require("../models/car");
 require("dotenv").config();
 
 class CarController {
-    static async getCar(req, res) {
+    static async getCars(req, res) {
         try {
             const cars = await Car.find();
             return res.status(200).send({ cars });
@@ -23,17 +23,17 @@ class CarController {
     }
 
     static async postCar(req, res) {
-        const { plate, brand, model, year} = req.body;
+        const {plate, brand, model, year} = req.body;
 
         if (!plate  || !brand || !model || !year)
             return res.status(400).send({ message: 'Field\'s can\'t be empty.' });
 
-        var verify = await User.findOne({ cpf: cpf });
+        var verify = await Car.findOne({ plate: plate });
         if (verify) {
-            return res.status(401).send({ error: 'An user with this CPF already exists!' });
+            return res.status(401).send({ error: 'A car with this plate already exists!' });
         }
-
-        const car = new ({
+        
+        const car = new Car({
             plate,
             brand,
             model,

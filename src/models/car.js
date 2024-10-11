@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
 const CarSchema = new mongoose.Schema({
-    carbrand: {
+    brand: {
         type: String,
         required: true,
         minlength: 1
     },
-    carmodel: {
+    model: {
         type: String,
         required: true,
         minlength: 1
     },
-    caryear: {
+    year: {
         type: String,
         required: true,
         minlength: 4
@@ -20,7 +20,7 @@ const CarSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    carplate: {
+    plate: {
         type: String,
         required: true,
         minlength: 7,

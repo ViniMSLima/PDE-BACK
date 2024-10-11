@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: 11,
   },
-  cars: [{
+  carsId: [{
     type: String,
     required: true,
     minlength: 11,

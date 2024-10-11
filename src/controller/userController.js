@@ -1,6 +1,5 @@
-    const { User } = require("../models/user");
+const { User } = require("../models/user");
 const jwt = require("jsonwebtoken");
-var CryptoJS = require("crypto-js");
 const { Car } = require("../models/car");
 require("dotenv").config();
 
@@ -15,35 +14,43 @@ class UserController {
     }
 
     static async getUserByCarPlate(req, res) {
-        const { carplate } = req.query;
+        const { plate } = req.query;
 
         try {
-            const users = await User.findOne({ carplate: carplate });;
-            return res.status(200).send({ users });
+            const car = await Car.findOne({ plate: plate });
+            let result = null;
+
+            const users = await User.find();
+            users.forEach(user => {
+                user.carsId.forEach(carId => {
+                    if(carId == car._id.toString())
+                    {
+                        result = user;
+                    }
+                });               
+            });
+            return res.status(200).send({ result });
         } catch (error) {
-            return res.status(404).send({ error: 'Users not found!' });
+            return res.status(404).send({ error: 'No users found with this car plate!' });
         }
     }
 
     static async postUser(req, res) {
-        const { name, carId, residence, cpf} = req.body;
+        const { name, carsId, residence, cpf} = req.body;
 
-        if (!name || !carId || !residence || !cpf)
+        if (!name || !carsId || !residence || !cpf)
             return res.status(400).send({ message: 'Field\'s can\'t be empty.' });
 
-        var verify = await Car.findOne({ plate: plate });
+        var verify = await User.findOne({ cpf: cpf });
         if (verify) {
-            return res.status(401).send({ error: 'A car with this plate already exists!' });
+            return res.status(401).send({ error: 'An user with this cpf already exists!' });
         }
 
         const user = new User({
             name,
-            carplate,
+            carsId,
             residence,
             cpf,
-            carbrand,
-            caryear,
-            carmodel,
             release: Date.now(),
             createdAt: Date.now(),
         });
